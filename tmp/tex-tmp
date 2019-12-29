@@ -1,0 +1,21 @@
+
+framework-Pregel
+\subsection{Pregel API}
+
+Pregel provides C++ API, which is flexible to write graph algorithms. \textbf{TODO} Figure .. shows . To write a Pregel program, the user has to subclass the class $Vertex$, which has three template arguments defining the value types of vertices, edges and messages. The virtual function $Compute()$ is overridden to execute at each active vertex in each superstep. The function $Compute()$ is allowed to get information of the vertex and its edges, and send messages to other vertices. It also can inspect and modify the value associated with the vertex and its out-going edges.
+
+Pregel uses message passing model other than remote read or shared memory. A vertex can send messages directly to others, even if other vertex is not a neighbor. The message consists of a user-defined value and the destination vertex. All the messages sent to a vertex in the current superstep are visible when $Compute()$ is called in the next superstep. It is guaranteed that messages are delivered and not duplicated.
+
+When the destination vertex of a message is on another machine, communication overhead is incurred, which might be reduced in some case. For example, in the PageRank algorithm, received floating valued messages are summed up and then used in the vertex function. In this case, the messages sent to a same vertex can be combined to one message to reduce the overhead. User can subclass the class $Combiner$ and override the virtual function $Combine()$ if the combination operation is commutative and associative.
+
+Pregel also provides \textit{aggregators} for statistics and global coordination. Each vertex can submit a value to an aggregator in a superstep, the aggregator combines these values to a single one, which is available in the next superstep. To do this, user can subclass the class $Aggregator$ and provide a reduction operator.
+
+As user-defined $Compute$ function is allowed to mutate the graph topology, Pregel provides two mechanisms to avoid conflicts. \textit{Partial ordering} defines the priority when adding and removing vertices and edges. \textit{Handlers} defined by the user resolves the conflicts on a same vertex.
+
+As there are lots of file formats of graphs, Pregel allows user to define how to interpret an input file, as well as define the output format. User needs to subclass the base classes $Reader$ and $Writer$.
+
+
+DSI-properties
+\subsection{Synchronous execution}
+
+Engines in graph processing frameworks are categorized into synchronous engine, which executes in a way of BSP, and asynchronous engine, which schedules active vertices if resources are available. 

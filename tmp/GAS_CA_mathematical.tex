@@ -1,0 +1,35 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\begin{document}	
+	
+	\begin{algorithm}
+	\begin{algorithmic}[1]
+	\STATE \textbf{gather}$(D_u, D_v)$: \textbf{return} agents $D_v.queue_u$ //gather\_nbrs: IN\_NBRS
+	\newline
+	\STATE \textbf{sum}$(queue_a, queue_b)$: \textbf{return} $queue_a \cup queue_b$
+	\newline
+	\STATE \textbf{apply}$(D_u, gathered\_agents)$:
+	\STATE $D_u.queue_u \leftarrow D_u.queue_u \cup gathered\_agents$
+	\STATE $\forall v \in u.neighbors, D_u.queue_v \leftarrow \emptyset $
+	\STATE u.updateAgentsLocation()
+	\FOR{agent $a$: $gathered\_agents$}
+		\IF{$u \neq a.destination$}
+			\STATE $v \leftarrow a.destination$
+			\STATE $D_u.queue_u \setminus \{a\}$
+			\STATE $D_u.queue_v \cup \{a\}$
+		\ENDIF
+	\ENDFOR
+	\STATE 	Activate($u$), \textbf{if} $D_u.queue_u \neq \emptyset$
+	\newline	
+	\STATE \textbf{scatter}$(D_u, D_v)$: //scatter\_nbrs: OUT\_NBRS
+	\STATE 	Activate($v$), \textbf{if} $D_u.queue_v \neq \emptyset$
+
+	\end{algorithmic}
+	\caption{Cellular Automata}	
+	\end{algorithm}
+	
+\end{document}

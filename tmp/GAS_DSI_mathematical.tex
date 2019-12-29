@@ -1,0 +1,52 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\begin{document}	
+	
+	\begin{algorithm}
+	\begin{algorithmic}[1]
+	\STATE \textbf{gather}$(D_u, D_{(u,v)}, D_v)$: //gather\_nbrs: ALL\_NBRS
+	\STATE \textbf{return} potential matches $D_v.pms$
+	\newline
+	\STATE \textbf{sum}$(pms_a, pms_b)$: \textbf{return} $pms_a \cup pms_b$
+	\newline
+	\STATE \textbf{apply}$(D_u, gathered\_pms)$:
+	\STATE $D_u.pms \leftarrow \emptyset$
+	\IF  {initialization}
+		\FOR {pattern vertex $pv$ : $V_p$}
+			\IF {$l(u)=l(pv))$} 
+				\STATE $D_u.pms \leftarrow D_u.pms \cup pm$, where $pm.pairs = \{(pv, u)\}$, $pm.trace = \{u\}$   
+			\ENDIF
+		\ENDFOR
+	\ELSE		
+		\FOR	{potential match $pm$ : $gathered\_pms$}
+			\IF  {$\forall (pu, gu) \in pm.pairs, \exists gu: u = gu$ \AND $u \notin pm.trace$}
+				\STATE $pm.trace \leftarrow pm.trace \cup \{u\}$ 
+				\STATE $D_u.pms \leftarrow D_u.pms \cup pm$
+			\ELSIF{$\forall (pu, gu) \in pm.pairs, \neg \exists gu: u = gu$}
+				\FOR {pattern vertex $pv$ : $f_v(pm.trace.last).neighbors$}
+					\IF {$\forall (pu, gu) \in pm.pairs, \neg \exists pu: pu = pv$ \AND $l(u)=l(pv)$ \AND $\forall (pu, gu) \in pm.pairs: f^{-1}_e(e(pv, pu)) \subseteq e(u,gu) $}
+						\STATE $pm'.pairs \leftarrow pm.pairs \cup (pv,u)$
+						\STATE $pm'.trace \leftarrow \{u\}$	
+						\IF {$|pm'.pairs| = |V_p|$}
+							\STATE $pm'.pairs$ is a subgraph
+						\ELSE
+							\STATE $D_u.pms \leftarrow D_u.pms \cup pm'$
+						\ENDIF		
+					\ENDIF
+				\ENDFOR		
+			\ENDIF
+		\ENDFOR		
+	\ENDIF	
+	\newline
+	\STATE \textbf{scatter}$(D_u, D_{(u,v)}, D_v)$: //scatter\_nbrs: ALL\_NBRS\\
+	\STATE 	Activate($v$), \textbf{if} $D_u.pms \neq \emptyset$
+
+	\end{algorithmic}
+	\caption{Graph Isomorphism}	
+	\end{algorithm}
+	
+\end{document}

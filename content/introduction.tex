@@ -1,0 +1,39 @@
+\chapter{Introduction}\label{chap:c1}
+
+As our society has entered the information age, more and more things are measured and recorded by the digital data, which is increasing extremely. Social network records our social behaviors, and mobile devices keep our personal data such as life experiences and mobility data. These large datasets are often referred as Big Data. The Big Data analytics increasingly attracts academia and industry to find feasible solutions for the challenges introduced by processing huge datasets. Large companies such as Google and Facebook spend more and more human and finance resources on Big Data, such as web, user or financial data, to mine valuable information.
+
+Accurate data analysis can reveal hidden information and lead people to better decision making. However, the traditional data analysing applications are generally not adequate to handle such large datasets. Due to the computing limitation of single machine and the size and complexity of the data, a single machine is not capable to process Big Data. Cloud is more powerful in computation and therefore is usually a good option for Big Data analysis. The datasets are distributed over many computers and the computation on the data is executed in parallel, so that results could be delivered in a reasonable time. Distributed and parallel computation on large datasets required the user having expert knowledge in both distributed systems and algorithmic design in the past.
+
+To obscure the complexity of the data distribution, computation parallelization and failure handling, Google initiated the MapReduce project in 2004\cite{dean2008mapreduce}, in which processes execute computation on data splits independently. However MapReduce programming model is inefficient to deal with the algorithms for processing graph data, since iterative computation over graph data requires MapReduce to save entire state of the graph form one stage to the next, which incurs communication and serialization overhead. 
+
+In contrast to MapReduce, graph processing frameworks such as Pregel\cite{malewicz2010pregel} and PowerGraph\cite{gonzalez2012powergraph} keep states of the graph in memory and perform parallel iterative computation on the graph with fault tolerance. These frameworks partition large graph over machines, which is critical for the performance for these frameworks. A good partitioning should have balanced workload on each machine and balanced communication between machines. Early frameworks such as Pregel use edge-cut and randomly assign vertices to machines, which is an inefficient strategy, especially for natural graphs with power-law degree distribution. To overcome this challenge, PowerGraph improves partitioning by adopting vertex-cut and assigning edges to machines in a collaborated way. In vertex-cut, a vertex with higher degree is more likely to span over several machines, and communication is needed when synchronizing data of these spanning vertices. In this thesis, we denote the size of vertex data to be synchronized of spanning vertex as vertex synchronization costs. This strategy is based on an assumption that the vertex synchronization costs for each vertex (if it is spanned over machines) are homogeneous. However, for many algorithms, the vertex synchronization costs are heterogeneous. To better partition large graphs, more sophisticated strategies are desired. These frameworks provide a similar programming model in which users express their algorithms in a vertex-centric program that thinks as a vertex. In PowerGraph, this programming paradigm is summarized as GAS (\textbf{G}ather, \textbf{A}pply and \textbf{S}catter) model. Vertex-centric program of GAS model running on each vertex iteratively gathers information from its neighbors, updates its own data by using the gathered information and informs its neighbors again.
+
+As graph processing frameworks can efficiently solve many graph-related problems by parallelism and the GAS programming paradigm is expressive, many important and popular graph algorithms have been redesigned in GAS model, such as PageRank and shortest paths. However, some important problems like subgraph isomorphism are still open, because the existing algorithms for those problem were not designed to think as a vertex.
+Therefore we design algorithms on graph processing frameworks for two significant applications. 
+
+The first one is subgraph isomorphism, which is fundamental for many problems such as clique problem. It is widely applied in diverse areas such as biochemistry, informatics and artificial intelligence. In cheminformatics, subgraph isomorphism is used to find similarities between chemical compounds from their structural formula. It has also been used in social network analysis. The subgraph isomorphism problem is a computational task with two graphs $G$ and $P$ as input, to determine whether $G$ contains subgraphs that are isomorphic to $P$. This problem is well-known as a NP-complete problem. However all existing algorithms for subgraph isomorphism do not fit to the programming model in graph processing frameworks. Because existing algorithms usually need a global overview to assist computation, while vertex-centric program only has access to local and adjacent data.
+
+The second one is geospatial simulation. The geo-informatics with spatial and temporal data can assist the investigation and modelling the environmental systems. For example, traffic simulation helps transportation authorities to make good decisions to keep the transportation system working. As the scale of simulations becomes larger, simulations trend to be executed on distributed systems. Therefore, graph processing framework is a good option, as it can naturally simulate the geospatial informations.
+
+In particular the contributes of this thesis are summarized as following:
+
+	\begin{itemize}
+	\item A novel algorithm (DSI) for subgraph isomorphism that fits to the GAS programming paradigm and analysis of the algorithm.
+	\item The optimized DSI algorithm with two techniques and a variant algorithm called PDSI that balances the complexity and completeness. 
+	\item An algorithm for geospatial simulation using Agent-Based Cellular Automata.
+	\item Implementations of proposed algorithms on PowerGraph and GrapH.
+	\item A comprehensive evaluation of the proposed algorithms on PowerGraph and evaluation of GrapH with the proposed algorithms with respect to the improvement of communication.
+	\end{itemize}
+
+
+\section*{Outline}
+
+This thesis is organized as follows:
+\begin{description}
+\item[Chapter \ref{chap:c2} -- \nameref{chap:c2}:] introduces the background knowledge of graph processing frameworks and their pros and cons.
+\item[Chapter \ref{chap:c3} -- \nameref{chap:c3}:] discusses the problem of graph pattern matching, and then gives an algorithm and its variants to solve the subgraph isomorphism problem in a distributed setting and analysis of the algorithms. 
+\item[Chapter \ref{chap:c4} -- \nameref{chap:c4}:] shows that graph processing framework can be used for geospatial simulation and gives a simulation algorithm of Agent-Based Cellular Automata.
+\item[Chapter \ref{chap:c5} -- \nameref{chap:c5}:] presents the evaluation environment, evaluation results and analysis of the proposed algorithms. We show the heterogeneity of the vertex synchronization costs, therefore we evaluate a framework prototype with the algorithms, which improves communication.
+\item[Chapter \ref{chap:c6} -- \nameref{chap:c6}:] draws a conclusion and shows possible improvements for both frameworks and the presented algorithms.
+
+\end{description}

@@ -18,18 +18,18 @@
                headsepline,
                cleardoublepage=empty,
                parskip=half,
-%				pointlessnumbers, %f"ur englische Texte, dann unten \ifdeutsch und \ifenglisch anpassen.
+				pointlessnumbers, %f"ur englische Texte, dann unten \ifdeutsch und \ifenglisch anpassen.
 %               draft    % um zu sehen, wo noch nachgebessert werden muss - wichtig, da Bindungskorrektur mit drin
                final   % ACHTUNG! - in pagestyle.tex noch Seitenstil anpassen
                ]{scrbook}
 
 %Englisch:			   
-%\let\ifdeutsch\iffalse
-%\let\ifenglisch\iftrue
+\let\ifdeutsch\iffalse
+\let\ifenglisch\iftrue
 
 %Deutsch:
-\let\ifdeutsch\iftrue
-\let\ifenglisch\iffalse
+%\let\ifdeutsch\iftrue
+%\let\ifenglisch\iffalse
 
 			   
 \input{preambel/packages_and_options}
@@ -106,7 +106,20 @@
 \else
 \section*{Abstract}
 \fi
-\ldots ... Short summary of the thesis ...
+
+In recent years, with the growth of graphs size and associated data, e.g. Facebook user graph, large graphs trend to be distributed and processed in parallel on the cluster by using graph processing frameworks such as Pregel and PowerGraph. Graph processing frameworks generally provide a vertex-centric programming model. However, some important problems do not have available algorithms in this model. This thesis presents novel algorithms in vertex-centric programming paradigm for two problems: distributed subgraph isomorphism, and geospatial simulation using Agent-Based Cellular Automata. We evaluate the proposed algorithms on PowerGraph, and use these algorithms to examine a framework prototype called GrapH with respect to the improvement in communication.
+%We evaluate the proposed algorithms on PowerGraph and show that heterogeneity of the vertex synchronization costs leads to communication imbalance. These algorithms are also used to examine the communication improvement of a framework prototype called GrapH, which takes the heterogeneity into account and introduces adaptive partitioning during the execution.
+
+The subgraph isomorphism problem is to determine whether a given graph contains any subgraph that is isomorphic to a given pattern.
+%, which is well known as NP-complete problem and is fundamental for many applications such as analysis of social networks and substructure search in chemistry. 
+Most existing algorithms for subgraph isomorphism are highly computation intensive and are not capable to scale to large graphs. As solving subgraph isomorphism often requires a global overview of graph, developing a vertex-centric algorithm is very challenging. We present a distributed algorithm (DSI) and two variants (optimized DSI and PDSI) based on the GAS model for subgraph isomorphism. We also analyse the properties of the algorithms and point out the bottlenecks for the performance.
+
+Geospatial simulation has assisted the investigation and modelling the environmental systems, which helps people understanding complex dynamics of our society and making better decisions. As the scale of simulations becomes larger, simulation trends to be executed on distributed systems. Therefore using graph processing frameworks is a good option for simulation. Thus we present an algorithm for geospatial simulation using Agent-Based Cellular Automata.
+
+Our evaluation show that optimized DSI needs on average only one third of the execution time as DSI needs. PDSI can remarkably reduce the runtime with a low proportion, and still be able to find a relative reasonable quantity of the isomorphic subgraphs. Moreover, algorithms for both subgraph isomorphism and geospatial simulation display heterogeneous vertex synchronization costs. Finally, we show that by taking the heterogeneity into account and introducing adaptive partitioning GrapH reduces overall communication more than 20\%, compared with PowerGraph partitioning strategy.
+
+%Besides evaluation of the proposed algorithms on PowerGraph, this thesis also shows that heterogeneity of the vertex synchronization costs leads to communication imbalance. The proposed algorithms were executed on a framework prototype under developing in University of Stuttgart, which takes the heterogeneity into account and introduces adaptive partitioning during the execution to reduce the communication between machines.
+
 \cleardoublepage
 
 
@@ -206,17 +219,23 @@
 %
 % ** Hier wird der Text eingebunden **
 %
-\input{content/einleitung}
+%\input{content/einleitung}
 %\input{...weitere Kapitel...}
-\input{content/kapitel2}
-\input{content/zusammenfassung_und_ausblick}
+%\input{content/kapitel2}
+\input{content/introduction}
+\input{content/framework}
+\input{content/gi}
+\input{content/ca}
+\input{content/evaluation}
+\input{content/conclusion_and_outlook}
+%\input{content/zusammenfassung_und_ausblick}
 %
 %
 %\renewcommand{\appendixtocname}{Anhang}
 %\renewcommand{\appendixname}{Anhang}
 %\renewcommand{\appendixpagename}{Anhang}
 \appendix
-\input{content/anhang}
+%\input{content/anhang}
 %\printindex
 %\bibliographystyle{alphadin}
 \ifdeutsch
@@ -228,7 +247,7 @@
 \ifdeutsch
 Alle URLs wurden zuletzt am 17.\,03.\,2008 geprüft.
 \else
-All links were last followed on March 17, 2008.
+All links were last followed on December 21, 2008.
 \fi
 
 \backmatter 
